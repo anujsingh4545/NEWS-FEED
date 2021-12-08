@@ -46,15 +46,18 @@ function get(category, q) {
 // To create new container of news div
 
 function set(data) {
-  console.log(data);
   news.innerHTML = "";
-  for (let i = 0; i < data.totalResults; i++) {
+  for (let i = 0; i < data.articles.length; i++) {
     let container = document.createElement("div");
     container.classList.add("container");
     let img_section = document.createElement("div");
     img_section.classList.add("imageSection");
     let image = document.createElement("img");
-    image.src = data.articles[i].urlToImage;
+    try {
+      image.src = data.articles[i].urlToImage;
+    } catch (error) {
+      image.alt = "Failed to load";
+    }
     image.classList.add("editImage");
     img_section.appendChild(image);
     container.appendChild(img_section);
@@ -65,15 +68,27 @@ function set(data) {
     let heading = document.createElement("h2");
     heading.classList.add("newsH2");
     let a = document.createElement("a");
-    a.href = data.articles[i].url;
-    a.innerText = data.articles[i].title;
+    try {
+      a.href = data.articles[i].url;
+    } catch (error) {
+      a.href = "#";
+    }
+    try {
+      a.innerText = data.articles[i].title;
+    } catch (error) {
+      a.innerText = "Failed to load";
+    }
 
     heading.appendChild(a);
     container2.appendChild(heading);
 
     let paragraph = document.createElement("p");
     paragraph.classList.add("newsP");
-    paragraph.innerText = data.articles[i].description;
+    try {
+      paragraph.innerText = data.articles[i].description;
+    } catch (error) {
+      paragraph.innerText = "Failed to load";
+    }
 
     container2.appendChild(paragraph);
 
@@ -82,13 +97,21 @@ function set(data) {
 
     let newspub = document.createElement("span");
     newspub.classList.add("newsPub");
-    newspub.innerText = data.articles[i].publishedAt;
+    try {
+      newspub.innerText = data.articles[i].publishedAt;
+    } catch (error) {
+      newspub.innerText = "Failed to load";
+    }
 
     source.appendChild(newspub);
 
     let newsname = document.createElement("span");
     newsname.classList.add("newsNam");
-    newsname.innerText = data.articles[i].source.name;
+    try {
+      newsname.innerText = data.articles[i].source.name;
+    } catch (error) {
+      newsname.innerText = "Error";
+    }
 
     source.appendChild(newsname);
 
